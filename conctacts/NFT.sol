@@ -20,20 +20,23 @@ contract NFT is ERC721, Ownable {
     function mint(address to) public onlyOwner returns (uint256) {
         uint256 newItemId = _nextTokenId;
         _nextTokenId += 1;
+
+        require(!_packedTokens[newItemId], "NFT: Packed tokens cannot be transferred");
+
         _mint(to, newItemId);
         return newItemId;
     }
 
     function packToken(uint256 tokenId) public {
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "PackableERC721: caller is not token owner nor approved");
-        require(!_packedTokens[tokenId], "PackableERC721: token is already packed");
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "NFT: caller is not token owner nor approved");
+        require(!_packedTokens[tokenId], "NFT: token is already packed");
         _packedTokens[tokenId] = true;
         emit TokenPacked(tokenId, true);
     }
 
     function unpackToken(uint256 tokenId) public {
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "PackableERC721: caller is not token owner nor approved");
-        require(_packedTokens[tokenId], "PackableERC721: token is not packed");
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "NFT: caller is not token owner nor approved");
+        require(_packedTokens[tokenId], "NFT: token is not packed");
         _packedTokens[tokenId] = false;
         emit TokenPacked(tokenId, false);
     }
@@ -47,8 +50,8 @@ contract NFT is ERC721, Ownable {
         return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
     }
 
-    // function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual override {
-    //     super._beforeTokenTransfer(from, to, tokenId);
-    //     require(!_packedTokens[tokenId], "PackableERC721: packed tokens cannot be transferred");
-    // }
+    function transferFrom(address from, address to, uint256 tokenId) public virtual override{
+        require(!_packedTokens[tokenId], "NFT: Packed tokens cannot be transferred");
+        super.transferFrom(from, to, tokenId);
+    }
 }
