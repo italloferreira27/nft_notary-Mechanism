@@ -1,8 +1,11 @@
-require("@nomiclabs/hardhat-ethers");
+const hre = require("hardhat");
 
 async function main() {
-    const Token = await ethers.getContractFactory("NFT");
+    await hre.run('compile');
+
+    const Token = await hre.ethers.getContractFactory("NFT");
     const token = await Token.deploy("Token", "TK");
+    await token.deployed();
     console.log("Token address: ", token.address);
 }
 
