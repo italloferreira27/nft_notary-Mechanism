@@ -31,7 +31,7 @@ const NotaryContractAmoy = new ethers.Contract(NFTAddressAmoy, NotaryABI.abi, am
 // console.log("amoy", AMOY_PRIVATE_KEY);
 
 async function mint(){
-    let idNFT = 5
+    let idNFT = 7;
 
     console.log("Minting NFTs...");
     try{
@@ -58,7 +58,8 @@ async function mint(){
         console.error('Failed to transfer NFT:', error);
     }
 
-    console.log("Balance of contract: ", await NotaryContractSepolia.balanceOf(NFTAddressSepolia).toString());
+    const balanceContrctSepolia = await NotaryContractSepolia.balanceOf(NFTAddressSepolia);
+    console.log("Balance of contract: ", balanceContrctSepolia.toString());
 
 
     // const balace = await NotaryContractSepolia.balanceOf("0x5AAd1957A2E047752cad49cbF4BB14f79Cb9B33E");
@@ -72,8 +73,8 @@ async function mint(){
         console.error('Failed to mint NFT on AMOY:', error);
     }
 
-    // const balaceAmoy = await NotaryContractAmoy.balanceOf("0x1283Bd5d3Db837eB0ec0DaB0b0D5aE6f291C22be").toString();
-    console.log("BalanceOf addres amoy: ", await NotaryContractAmoy.balanceOf("0x1283Bd5d3Db837eB0ec0DaB0b0D5aE6f291C22be").toString());
+    const balaceAmoy = await NotaryContractAmoy.balanceOf("0x1283Bd5d3Db837eB0ec0DaB0b0D5aE6f291C22be");
+    console.log("BalanceOf addres amoy: ", balaceAmoy.toString());
 
     console.log("Minted NFT Amoy");
 }
