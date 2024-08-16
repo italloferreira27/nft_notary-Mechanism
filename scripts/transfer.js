@@ -30,8 +30,8 @@ const NotaryContractAmoy = new ethers.Contract(NFTAddressAmoy, NotaryABI.abi, am
 // console.log("sepolia", sepoliaWallet.address);
 // console.log("amoy", AMOY_PRIVATE_KEY);
 
-async function mint(){
-    let idNFT = 7;
+async function transfer(){
+    let idNFT = 8;
 
     console.log("Minting NFTs...");
     try{
@@ -79,7 +79,7 @@ async function mint(){
     console.log("Minted NFT Amoy");
 }
 
-mint()
+transfer()
     .then(() => process.exit(0))
     .catch(error => {
         console.error(error);
