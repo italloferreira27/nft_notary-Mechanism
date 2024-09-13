@@ -1,0 +1,46 @@
+Mint NFT Arbitrum...
+Minted NFT Arbitrum
+Arbitrum address:  0x5F877AF7281407389EAe9EcE3100AAFB45eE24C7
+BalanceOf Arbitrum:  1
+Minting Time:  3931 ms
+Gas Used:  93625
+
+
+Aprove contract...
+Approve Time:  3194 ms
+Gas Used:  49088
+
+
+Transfering NFTs...
+Data Transfer:  [
+  '0xE0c46dB5F4909d850c3474755a25Cc27D03a374b',
+  '0x5F877AF7281407389EAe9EcE3100AAFB45eE24C7',
+  '0x9A30D453697a55d810A51425137A9F0Bb0f63F76',
+  '0x486180513A8D1A1442b378dCD9C2fd24dF34cC32',
+  BigNumber { value: "0" },
+  BigNumber { value: "1" },
+  nftContract: '0xE0c46dB5F4909d850c3474755a25Cc27D03a374b',
+  sender: '0x5F877AF7281407389EAe9EcE3100AAFB45eE24C7',
+  receiverOnChain: '0x9A30D453697a55d810A51425137A9F0Bb0f63F76',
+  receiverInterChain: '0x486180513A8D1A1442b378dCD9C2fd24dF34cC32',
+  tokenId: BigNumber { value: "0" },
+  transferId: BigNumber { value: "1" }
+]
+Transfer Time:  2181 ms
+Gas Used:  223872
+
+Mint new NFT in Amoy
+Amoy address:  0x486180513A8D1A1442b378dCD9C2fd24dF34cC32
+BalanceOf Amoy:  1
+Minting Amoy Time:  8680 ms
+Gas Used:  230088
+Data Mint:  [
+  '0x5F877AF7281407389EAe9EcE3100AAFB45eE24C7',
+  '0x486180513A8D1A1442b378dCD9C2fd24dF34cC32',
+  BigNumber { value: "1" },
+  BigNumber { value: "1" },
+  sender: '0x5F877AF7281407389EAe9EcE3100AAFB45eE24C7',
+  receiver: '0x486180513A8D1A1442b378dCD9C2fd24dF34cC32',
+  tokenId: BigNumber { value: "1" },
+  mintId: BigNumber { value: "1" }
+]
