@@ -63,3 +63,28 @@ Data Mint:  [
   tokenId: BigNumber { value: "1" },
   mintId: BigNumber { value: "1" }
 ]
+
+//-------------------------newDeploy-------------------------
+---------------------------Arbitrum
+Nothing to compile
+Token address:  0xca417d3DD09c5Ef7b3d5DD96009A6802868B6592
+Deployed by:  0x9A30D453697a55d810A51425137A9F0Bb0f63F76
+Gas Used:  6517906
+Token Deployment Time:  4201 ms
+
+Notary address:  0x71193165C2C216d5D7163a5d32C5B04eBFfA7b6F
+Deployed by:  0x9A30D453697a55d810A51425137A9F0Bb0f63F76
+Gas Used:  8417801
+Notary Deployment Time:  2338 ms
+//-------------------------newDeploy-------------------------
+---------------------------Amoy
+Nothing to compile
+Token address:  0xEC2e149012D9223da42482bfa0B6bf3eAAa26dB7
+Deployed by:  0xbc8Cd664252FF99052cFCF0AdC1cA3603Af45AD0
+Gas Used:  1953992
+Token Deployment Time:  8585 ms
+
+Notary address:  0x60F4F902DAc6C7055a1a8123809C832425f9ebbA
+Deployed by:  0xbc8Cd664252FF99052cFCF0AdC1cA3603Af45AD0
+Gas Used:  2713963
+Notary Deployment Time:  6718 ms

@@ -135,4 +135,8 @@ contract Notary is ERC721, Ownable {
         require(transferId > 0 && transferId <= _transferIds, "Transfer ID invalido");
         return nftTransfers[transferId - 1];
     }
+
+    function getNftTransfers() external view returns (uint256) {
+        return nftTransfers.length;
+    }
 }

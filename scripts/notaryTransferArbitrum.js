@@ -1,6 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
-require('fs');
+const fs = require('fs');
 require("dotenv").config();
 const { parseEther } = require('ethers/lib/utils');
 
@@ -33,7 +33,8 @@ const NFTContractArbitrum = new ethers.Contract(NFTAddressArbitrum, NFTABI.abi, 
 const NFTContractAmoy = new ethers.Contract(NFTAddressAmoy, NFTABI.abi, amoyWallet);
 
 async function transfer() {
-    let NFTid = 0;
+    const NFTid = await NotaryContractArbitrum.connect(arbitrumWallet02).getNftTransfers();
+    console.log("NFTid: ", NFTid);
     console.log("Mint NFT Arbitrum...");
 
     const mintArbitrumStartTime = Date.now();
@@ -69,7 +70,7 @@ async function transfer() {
     const timeTransferArbitrum = (transferArbitrumEndTime - transferArbitrumStartTime);
     const gasUsedTransferArbitrum = receiptTransferInter.gasUsed;
 
-    dataTransfer = await NotaryContractArbitrum.connect(arbitrumWallet02).nftTransfers(NFTid);
+    const dataTransfer = await NotaryContractArbitrum.connect(arbitrumWallet02).nftTransfers(NFTid);
     console.log("Data Transfer: ", dataTransfer);
     console.log("Transfer Time: ", (timeTransferArbitrum), "ms");
     console.log("Gas Used: ", gasUsedTransferArbitrum.toString());
@@ -99,6 +100,28 @@ async function transfer() {
 
     const datamint = await NotaryContractAmoy.connect(amoyWallet).mintRecords(NFTid);
     console.log("Data Mint: ", datamint);
+
+    const csvData = [
+        [gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy]
+    ];
+
+    // Convert array to CSV string
+    const csvContent = csvData.map(e => e.join(",")).join("\n");
+
+    // Check if the file already exists, if not, add headers
+    if (!fs.existsSync('./metrics/gasUsageDataArbitrum.csv')) {
+        const headers = 'gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy\n';
+        fs.appendFileSync('./metrics/gasUsageDataArbitrum.csv', headers);
+    }
+
+    // Append the CSV data to the file
+    fs.appendFileSync('./metrics/gasUsageDataArbitrum.csv', csvContent + '\n', (err) => {
+        if (err) {
+            console.error('Error writing to file', err);
+        } else {
+            console.log('Data successfully appended to CSV file!');
+        }
+    });
 }
 
 transfer()
