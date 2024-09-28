@@ -101,8 +101,13 @@ async function transfer() {
     const datamint = await NotaryContractAmoy.connect(amoyWallet).mintRecords(NFTid);
     console.log("Data Mint: ", datamint);
 
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    const date = today.toISOString();
+    console.log("\nDate: ", date);
+
     const csvData = [
-        [gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy]
+        [date, gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy]
     ];
 
     // Convert array to CSV string
@@ -110,7 +115,7 @@ async function transfer() {
 
     // Check if the file already exists, if not, add headers
     if (!fs.existsSync('./metrics/gasUsageDataArbitrum.csv')) {
-        const headers = 'gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy\n';
+        const headers = 'date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy\n';
         fs.appendFileSync('./metrics/gasUsageDataArbitrum.csv', headers);
     }
 

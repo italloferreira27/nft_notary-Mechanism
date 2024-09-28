@@ -1,4 +1,4 @@
-gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy
+date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy
 136640,4804,122181,3250,278126,2688,161688,7395
 273058,6377,267222,2925,479535,3071,161688,7274
 177590,4067,151163,3192,343508,2449,161688,7324
@@ -9,3 +9,6 @@ gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,
 207279,4040,187244,3006,385811,2531,230088,11312
 190179,4031,187256,2962,354423,2269,161688,7410
 190179,2722,187256,2984,354423,2309,161688,7506
+85896,3794,60419,4715,205837,2976,161688,8191
+2024-09-28T16:52:23.949Z,219618,2877,223773,3279,396903,2459,161688,7781
+2024-09-28T16:53:06.489Z,219618,2635,223773,3279,396903,2565,161688,7575
