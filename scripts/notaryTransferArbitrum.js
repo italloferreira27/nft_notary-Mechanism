@@ -134,8 +134,15 @@ async function transfer() {
         console.log(`Preço atual de ${cryptoId} em USD: $${priceAmoy}`);
         console.log(`Preço atual de ${cryptoId2} em USD: $${priceArbitrum}`);
     }
+
+    const gasPriceArbitrum = await arbitrumProvider.getGasPrice();
+    const gasPriceAmoy = await amoyProvider.getGasPrice();
+
+    console.log("Gas Price Arbitrum: ", gasPriceArbitrum.toString());
+    console.log("Gas Price Amoy: ", gasPriceAmoy.toString());
+
     const csvData = [
-        [date, gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy, priceAmoy, priceArbitrum, fullTime]
+        [date, gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy, priceAmoy, priceArbitrum, fullTime, gasPriceAmoy.toString(), gasPriceArbitrum.toString()]
     ];
 
     // Convert array to CSV string
@@ -143,7 +150,7 @@ async function transfer() {
 
     // Check if the file already exists, if not, add headers
     if (!fs.existsSync('./metrics/gasUsageDataArbitrum.csv')) {
-        const headers = 'date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy,priceAmoy (USD),priceArbitrum (USD),full Time (ms)\n';
+        const headers = 'date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy,priceAmoy (USD),priceArbitrum (USD),full Time (ms),gasPriceAmoy,gasPriceArbitrum\n';
         fs.appendFileSync('./metrics/gasUsageDataArbitrum.csv', headers);
     }
 

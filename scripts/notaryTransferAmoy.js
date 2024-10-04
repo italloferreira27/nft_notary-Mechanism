@@ -46,7 +46,6 @@ async function getCryptoPrice(cryptoId) {
 }
 
 async function transferFromAmoy() {
-
     const fullTimeStart = Date.now();
     const NFTid = await NotaryContractAmoy.connect(amoyWallet02).getNftTransfers();
     console.log("NFTid: ", NFTid);
@@ -87,7 +86,6 @@ async function transferFromAmoy() {
     const gasUsedApproveAmoy = receiptApprove.gasUsed;
     console.log("Approve Time: ", (timeApproveAmoy), "ms");
     console.log("Gas Used: ", gasUsedApproveAmoy.toString());
-
 
     console.log("\n\nTransfering NFTs from Amoy...");
     const transferAmoyStartTime = Date.now();
@@ -153,8 +151,14 @@ async function transferFromAmoy() {
         console.log(`Preço atual de ${cryptoId2} em USD: $${priceArbitrum}`);
     }
 
+    const gasPriceArbitrum = await arbitrumProvider.getGasPrice();
+    const gasPriceAmoy = await amoyProvider.getGasPrice();
+
+    console.log("Gas Price Arbitrum: ", gasPriceArbitrum.toString());
+    console.log("Gas Price Amoy: ", gasPriceAmoy.toString());
+
     const csvData = [
-        [date, gasUsedMintAmoy.toString(), timeMintAmoy, gasUsedApproveAmoy.toString(), timeApproveAmoy, gasUsedTransferAmoy.toString(), timeTransferAmoy, gasUsedMintArbitrum.toString(), timeMintArbitrum, priceAmoy, priceArbitrum, fullTime]
+        [date, gasUsedMintAmoy.toString(),timeMintAmoy, gasUsedApproveAmoy.toString(),timeApproveAmoy, gasUsedTransferAmoy.toString(),timeTransferAmoy, gasUsedMintArbitrum.toString(),timeMintArbitrum, priceAmoy, priceArbitrum, fullTime, gasPriceAmoy.toString(), gasPriceArbitrum.toString()]
     ];
 
     // Convert array to CSV string
@@ -162,7 +166,7 @@ async function transferFromAmoy() {
 
     // Check if the file already exists, if not, add headers
     if (!fs.existsSync('./metrics/gasUsageDataAmoy.csv')) {
-        const headers = 'date,gasUsedMintAmoy,timeMintAmoy,gasUsedApproveAmoy,timeApproveAmoy,gasUsedTransferAmoy,timeTransferAmoy,gasUsedMintArbitrum,timeMintArbitrum,priceAmoy (USD),priceArbitrum (USD),full Time (ms)\n';
+        const headers = 'date,gasUsedMintAmoy,timeMintAmoy,gasUsedApproveAmoy,timeApproveAmoy,gasUsedTransferAmoy,timeTransferAmoy,gasUsedMintArbitrum,timeMintArbitrum,priceAmoy (USD),priceArbitrum (USD),full Time (ms),gasPriceAmoy,gasPriceArbitrum\n';
         fs.appendFileSync('./metrics/gasUsageDataAmoy.csv', headers);
     }
 
