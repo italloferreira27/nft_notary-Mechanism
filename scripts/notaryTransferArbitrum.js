@@ -3,6 +3,7 @@ require("@nomiclabs/hardhat-ethers");
 const fs = require('fs');
 require("dotenv").config();
 const { parseEther } = require('ethers/lib/utils');
+const axios = require('axios');
 
 const NotaryABI = require("../artifacts/contracts/Notary.sol/Notary.json");
 const NFTABI = require("../artifacts/contracts/NFT.sol/NFT.json");
@@ -32,7 +33,21 @@ const NotaryContractAmoy = new ethers.Contract(NotaryAddressAmoy, NotaryABI.abi,
 const NFTContractArbitrum = new ethers.Contract(NFTAddressArbitrum, NFTABI.abi, arbitrumWallet);
 const NFTContractAmoy = new ethers.Contract(NFTAddressAmoy, NFTABI.abi, amoyWallet);
 
+
+async function getCryptoPrice(cryptoId) {
+    try {
+        const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptoId}&vs_currencies=usd`);
+        const price = response.data[cryptoId].usd;
+        return price;
+    } catch (error) {
+        console.error(`Erro ao buscar o preço de ${cryptoId}:`, error);
+        return null;
+    }
+}
+
+
 async function transfer() {
+    const fullTimeStart = Date.now();
     const NFTid = await NotaryContractArbitrum.connect(arbitrumWallet02).getNftTransfers();
     console.log("NFTid: ", NFTid);
     console.log("Mint NFT Arbitrum...");
@@ -106,8 +121,21 @@ async function transfer() {
     const date = today.toISOString();
     console.log("\nDate: ", date);
 
+    const fullTimeEnd = Date.now();
+    const fullTime = (fullTimeEnd - fullTimeStart);
+    console.log("Full Time: ", fullTime, "ms");
+
+    const cryptoId = 'matic-network';  // Amoy
+    const cryptoId2 = 'ethereum';      // Arbitrum  
+    const priceAmoy = await getCryptoPrice(cryptoId);
+    const priceArbitrum = await getCryptoPrice(cryptoId2);
+
+    if (priceAmoy !== null || priceArbitrum !== null) {
+        console.log(`Preço atual de ${cryptoId} em USD: $${priceAmoy}`);
+        console.log(`Preço atual de ${cryptoId2} em USD: $${priceArbitrum}`);
+    }
     const csvData = [
-        [date, gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy]
+        [date, gasUsedMintArbitrum.toString(), timeMintArbitrum, gasUsedApproveArbitrum.toString(), timeApproveArbitrum, gasUsedTransferArbitrum.toString(), timeTransferArbitrum, gasUsedMintAmoy.toString(), timeMintAmoy, priceAmoy, priceArbitrum, fullTime]
     ];
 
     // Convert array to CSV string
@@ -115,7 +143,7 @@ async function transfer() {
 
     // Check if the file already exists, if not, add headers
     if (!fs.existsSync('./metrics/gasUsageDataArbitrum.csv')) {
-        const headers = 'date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy\n';
+        const headers = 'date,gasUsedMintArbitrum,timeMintArbitrum,gasUsedApproveArbitrum,timeApproveArbitrum,gasUsedTransferArbitrum,timeTransferArbitrum,gasUsedMintAmoy,timeMintAmoy,priceAmoy (USD),priceArbitrum (USD),full Time (ms)\n';
         fs.appendFileSync('./metrics/gasUsageDataArbitrum.csv', headers);
     }
 
