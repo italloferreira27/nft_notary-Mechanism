@@ -113,9 +113,6 @@ async function transfer() {
     console.log("Minting Amoy Time: ", (timeMintAmoy), "ms");
     console.log("Gas Used: ", gasUsedMintAmoy.toString());
 
-    const datamint = await NotaryContractAmoy.connect(amoyWallet).mintRecords(NFTid);
-    console.log("Data Mint: ", datamint);
-
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     const date = today.toISOString();

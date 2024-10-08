@@ -129,9 +129,6 @@ async function transferFromAmoy() {
     console.log("Minting Arbitrum Time: ", (timeMintArbitrum), "ms");
     console.log("Gas Used: ", gasUsedMintArbitrum.toString());
 
-    const datamint = await NotaryContractArbitrum.connect(arbitrumWallet).mintRecords(NFTid);
-    console.log("Data Mint: ", datamint);
-
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     const date = today.toISOString();
