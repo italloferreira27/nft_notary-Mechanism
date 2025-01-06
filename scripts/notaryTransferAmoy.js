@@ -8,31 +8,30 @@ const axios = require('axios');
 const NotaryABI = require("../artifacts/contracts/Notary.sol/Notary.json");
 const NFTABI = require("../artifacts/contracts/NFT.sol/NFT.json");
 
-const { NODE_URL_ARBITRUM, CHAIN_ID_ARBITRUM, ARBITRUM_PRIVATE_KEY01, ARBITRUM_PRIVATE_KEY02, ARBITRUM_PRIVATE_KEY03, NODE_URL_AMOY, CHAIN_ID_AMOY, AMOY_PRIVATE_KEY01, AMOY_PRIVATE_KEY02, AMOY_PRIVATE_KEY03, NOTARYADDRESSARBITRUM, NFTAADDRESSARBITRUM, NOTARYADDRESSAMOY, NFTAADDRESSAMOY } = process.env;
+const { NODE_URL_AVALANCHE, CHAIN_ID_AVALANCHE, AVALANCHE_PRIVATE_KEY01, AVALANCHE_PRIVATE_KEY02, AVALANCHE_PRIVATE_KEY03, NODE_URL_AMOY, CHAIN_ID_AMOY, AMOY_PRIVATE_KEY01, AMOY_PRIVATE_KEY02, AMOY_PRIVATE_KEY03, NOTARYADDRESSAVALANCHE, NFTAADDRESSAVALANCHE, NOTARYADDRESSAMOY, NFTAADDRESSAMOY } = process.env;
 
-const arbitrumProvider = new ethers.providers.JsonRpcProvider(NODE_URL_ARBITRUM);
+const avalancheProvider = new ethers.providers.JsonRpcProvider(NODE_URL_AVALANCHE);
 const amoyProvider = new ethers.providers.JsonRpcProvider(NODE_URL_AMOY);
 
-const arbitrumWallet = new ethers.Wallet(ARBITRUM_PRIVATE_KEY01, arbitrumProvider);
-const arbitrumWallet02 = new ethers.Wallet(ARBITRUM_PRIVATE_KEY02, arbitrumProvider);
-const arbitrumWallet03 = new ethers.Wallet(ARBITRUM_PRIVATE_KEY03, arbitrumProvider);
+const avalancheWallet = new ethers.Wallet(AVALANCHE_PRIVATE_KEY01, avalancheProvider);
+const avalancheWallet02 = new ethers.Wallet(AVALANCHE_PRIVATE_KEY02, avalancheProvider);
+const avalancheWallet03 = new ethers.Wallet(AVALANCHE_PRIVATE_KEY03, avalancheProvider);
 
 const amoyWallet = new ethers.Wallet(AMOY_PRIVATE_KEY01, amoyProvider);
 const amoyWallet02 = new ethers.Wallet(AMOY_PRIVATE_KEY02, amoyProvider);
 const amoyWallet03 = new ethers.Wallet(AMOY_PRIVATE_KEY03, amoyProvider);
 
-const NotaryAddressArbitrum = NOTARYADDRESSARBITRUM;
-const NFTAddressArbitrum = NFTAADDRESSARBITRUM;
+const NotaryAddressAvalanche = NOTARYADDRESSAVALANCHE;
+const NFTAddressAvalanche = NFTAADDRESSAVALANCHE;
 
 const NotaryAddressAmoy = NOTARYADDRESSAMOY;
 const NFTAddressAmoy = NFTAADDRESSAMOY;
 
-const NotaryContractArbitrum = new ethers.Contract(NotaryAddressArbitrum, NotaryABI.abi, arbitrumWallet);
+const NotaryContractAvalanche = new ethers.Contract(NotaryAddressAvalanche, NotaryABI.abi, avalancheWallet);
 const NotaryContractAmoy = new ethers.Contract(NotaryAddressAmoy, NotaryABI.abi, amoyWallet);
 
-const NFTContractArbitrum = new ethers.Contract(NFTAddressArbitrum, NFTABI.abi, arbitrumWallet);
+const NFTContractAvalanche = new ethers.Contract(NFTAddressAvalanche, NFTABI.abi, avalancheWallet);
 const NFTContractAmoy = new ethers.Contract(NFTAddressAmoy, NFTABI.abi, amoyWallet);
-
 
 async function getCryptoPrice(cryptoId) {
     try {
@@ -89,7 +88,7 @@ async function transferFromAmoy() {
 
     console.log("\n\nTransfering NFTs from Amoy...");
     const transferAmoyStartTime = Date.now();
-    const transferInter = await NotaryContractAmoy.connect(amoyWallet02).transferNFTInterChain(NFTAddressAmoy, NFTid, arbitrumWallet02.address, 
+    const transferInter = await NotaryContractAmoy.connect(amoyWallet02).transferNFTInterChain(NFTAddressAmoy, NFTid, avalancheWallet02.address, 
         {
             gasLimit: 1000000, 
             maxPriorityFeePerGas: ethers.utils.parseUnits('25', 'gwei'),
@@ -106,11 +105,11 @@ async function transferFromAmoy() {
     console.log("Transfer Time: ", (timeTransferAmoy), "ms");
     console.log("Gas Used: ", gasUsedTransferAmoy.toString());
 
-    console.log("\nMint new NFT in Arbitrum");
-    const arbitrumMintStartTime = Date.now();
-    const gasEstimate = await arbitrumProvider.getFeeData();
-    const arbitrumMint = await NotaryContractArbitrum.connect(arbitrumWallet).mintNFT(
-        arbitrumWallet02.address, 
+    console.log("\nMint new NFT in Avalanche");
+    const avalancheMintStartTime = Date.now();
+    const gasEstimate = await avalancheProvider.getFeeData();
+    const avalancheMint = await NotaryContractAvalanche.connect(avalancheWallet).mintNFT(
+        avalancheWallet02.address, 
         amoyWallet02.address, 
         {
             gasLimit: 1000000, 
@@ -118,16 +117,16 @@ async function transferFromAmoy() {
             maxFeePerGas: ethers.utils.parseUnits('50', 'gwei')
         }
     );
-    const receiptMintArbitrum = await arbitrumMint.wait();
-    const arbitrumMintEndTime = Date.now();
-    const timeMintArbitrum = (arbitrumMintEndTime - arbitrumMintStartTime);
-    const gasUsedMintArbitrum = receiptMintArbitrum.gasUsed;
+    const receiptMintAvalanche = await avalancheMint.wait();
+    const avalancheMintEndTime = Date.now();
+    const timeMintAvalanche = (avalancheMintEndTime - avalancheMintStartTime);
+    const gasUsedMintAvalanche = receiptMintAvalanche.gasUsed;
 
-    balanceMint = await NotaryContractArbitrum.balanceOf(arbitrumWallet02.address);
-    console.log("Arbitrum address: ", arbitrumWallet02.address);
-    console.log("BalanceOf Arbitrum: ", balanceMint.toString());
-    console.log("Minting Arbitrum Time: ", (timeMintArbitrum), "ms");
-    console.log("Gas Used: ", gasUsedMintArbitrum.toString());
+    balanceMint = await NotaryContractAvalanche.balanceOf(avalancheWallet02.address);
+    console.log("Avalanche address: ", avalancheWallet02.address);
+    console.log("BalanceOf Avalanche: ", balanceMint.toString());
+    console.log("Minting Avalanche Time: ", (timeMintAvalanche), "ms");
+    console.log("Gas Used: ", gasUsedMintAvalanche.toString());
 
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -139,31 +138,32 @@ async function transferFromAmoy() {
     console.log("Full Time: ", fullTime, "ms");
 
     const cryptoId = 'matic-network';  // Amoy
-    const cryptoId2 = 'ethereum';      // Arbitrum  
+    const cryptoId2 = 'avalanche-2';      // Avalanche
     const priceAmoy = await getCryptoPrice(cryptoId);
-    const priceArbitrum = await getCryptoPrice(cryptoId2);
+    const priceAvalanche = await getCryptoPrice(cryptoId2);
 
-    if (priceAmoy !== null || priceArbitrum !== null) {
+    if (priceAmoy !== null || priceAvalanche !== null) {
         console.log(`Preço atual de ${cryptoId} em USD: $${priceAmoy}`);
-        console.log(`Preço atual de ${cryptoId2} em USD: $${priceArbitrum}`);
+        console.log(`Preço atual de ${cryptoId2} em USD: $${priceAvalanche}`);
     }
 
-    const gasPriceArbitrum = await arbitrumProvider.getGasPrice();
+    const gasPriceAvalanche = await avalancheProvider.getGasPrice();
     const gasPriceAmoy = await amoyProvider.getGasPrice();
 
-    console.log("Gas Price Arbitrum: ", gasPriceArbitrum.toString());
+    console.log("Gas Price Avalanche: ", gasPriceAvalanche.toString());
     console.log("Gas Price Amoy: ", gasPriceAmoy.toString());
 
     const csvData = [
-        [date, gasUsedMintAmoy.toString(),timeMintAmoy, gasUsedApproveAmoy.toString(),timeApproveAmoy, gasUsedTransferAmoy.toString(),timeTransferAmoy, gasUsedMintArbitrum.toString(),timeMintArbitrum, priceAmoy, priceArbitrum, fullTime, gasPriceAmoy.toString(), gasPriceArbitrum.toString()]
+        [date, gasUsedMintAmoy.toString(),timeMintAmoy, gasUsedApproveAmoy.toString(),timeApproveAmoy, gasUsedTransferAmoy.toString(),timeTransferAmoy, gasUsedMintAvalanche.toString(),timeMintAvalanche, priceAmoy, priceAvalanche, fullTime, gasPriceAmoy.toString(), gasPriceAvalanche.toString()]
     ];
 
     // Convert array to CSV string
     const csvContent = csvData.map(e => e.join(",")).join("\n");
 
+    
     // Check if the file already exists, if not, add headers
     if (!fs.existsSync('./metrics/gasUsageDataAmoy.csv')) {
-        const headers = 'date,gasUsedMintAmoy,timeMintAmoy,gasUsedApproveAmoy,timeApproveAmoy,gasUsedTransferAmoy,timeTransferAmoy,gasUsedMintArbitrum,timeMintArbitrum,priceAmoy (USD),priceArbitrum (USD),full Time (ms),gasPriceAmoy,gasPriceArbitrum\n';
+        const headers = 'date,gasUsedMintAmoy,timeMintAmoy,gasUsedApproveAmoy,timeApproveAmoy,gasUsedTransferAmoy,timeTransferAmoy,gasUsedMintAvalanche,timeMintAvalanche,priceAmoy (USD),priceAvalanche (USD),full Time (ms),gasPriceAmoy,gasPriceAvalanche\n';
         fs.appendFileSync('./metrics/gasUsageDataAmoy.csv', headers);
     }
 

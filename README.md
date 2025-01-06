@@ -11,11 +11,12 @@ npm install
 
 * Inicialmente é preciso fazer os deploys nas duas redes de teste, tanto na amoy quanto na arbitrum:
 ```bash
-npx hardhat run scripts/deploy.js --network arbitrum
+npx hardhat run scripts/deploy.js --network avalanche
 npx hardhat run scripts/deploy.js --network amoy
 ```
 
-* Depois executar o notaryTransfer.js, para efetuar a interoperação:
+* Depois executar os scripts para efetuar a interoperação, sendo respectivamente o 1° da rede amoy para Fuji e o 2° da fuji para amoy:
 ```bash
-npx hardhat run scripts/notaryTransfer.js 
+npx hardhat run scripts/notaryTransferAmoy.js 
+npx hardhat run scripts/notaryTransferAvalanche.js 
 ```
