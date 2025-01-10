@@ -119,7 +119,7 @@ async function transfer() {
     console.log("Full Time: ", fullTime, "ms");
 
     const cryptoId = 'avalanche-2';  // Avalanche
-    const cryptoId2 = 'ethereum';      // Amoy  
+    const cryptoId2 = 'matic-network';      // Amoy  
     const priceAvalanche = await getCryptoPrice(cryptoId);
     const priceAmoy = await getCryptoPrice(cryptoId2);
 
